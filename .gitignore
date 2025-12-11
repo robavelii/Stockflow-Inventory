@@ -66,3 +66,4 @@ prisma/generated/
 
 # Debug
 .debug/
+.vercel
