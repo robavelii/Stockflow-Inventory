@@ -95,14 +95,6 @@ src/
 5. **Open browser:**
    Navigate to `http://localhost:3000`
 
-## 📚 Documentation
-
-- **[QUICK_START.md](./QUICK_START.md)** - 5-minute setup guide
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment instructions
-- **[PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md)** - Detailed structure guide
-- **[MODULAR_REFACTOR.md](./MODULAR_REFACTOR.md)** - Refactoring details
-- **[FEATURES_SUGGESTIONS.md](./FEATURES_SUGGESTIONS.md)** - Future features
-- **[FINAL_SUMMARY.md](./FINAL_SUMMARY.md)** - Complete summary
 
 ## 🧪 Testing
 
@@ -283,11 +275,6 @@ See `supabase/migrations/001_initial_schema.sql` for complete schema.
 
 MIT License
 
-## 🆘 Support
-
-- Check [QUICK_START.md](./QUICK_START.md) for setup help
-- Review [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment issues
-- See [FEATURES_SUGGESTIONS.md](./FEATURES_SUGGESTIONS.md) for feature ideas
 
 ---
 
