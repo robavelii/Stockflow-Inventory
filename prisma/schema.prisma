@@ -1,0 +1,95 @@
+// Prisma Schema for StockFlow Inventory
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  name       String   @db.VarChar(255)
+  sku        String   @db.VarChar(100)
+  category   String?  @db.VarChar(100)
+  quantity   Int      @default(0)
+  minLevel   Int      @default(10) @map("min_level")
+  price      Decimal  @db.Decimal(10, 2)
+  cost       Decimal? @db.Decimal(10, 2)
+  status     String   @default("In Stock") @db.VarChar(20)
+  supplier   String?  @db.VarChar(255)
+  imageUrl   String?  @map("image_url") @db.Text
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([userId, sku])
+  @@index([userId])
+  @@index([sku])
+  @@index([category])
+  @@index([status])
+  @@map("products")
+}
+
+model Order {
+  id           String       @id @default(uuid())
+  userId       String       @map("user_id")
+  orderNumber  String       @unique @map("order_number") @db.VarChar(50)
+  customerId   String?      @map("customer_id")
+  customerName String       @map("customer_name") @db.VarChar(255)
+  total        Decimal      @db.Decimal(10, 2)
+  status       String       @default("Pending") @db.VarChar(20)
+  itemsCount   Int          @default(0) @map("items_count")
+  createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  orderItems   OrderItem[]
+
+  @@unique([userId, orderNumber])
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt(sort: Desc)])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String   @map("order_id")
+  productId String   @map("product_id")
+  quantity  Int
+  price     Decimal  @db.Decimal(10, 2)
+  subtotal  Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  name      String   @db.VarChar(255)
+  email     String?  @db.VarChar(255)
+  phone     String?  @db.VarChar(20)
+  address   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([userId])
+  @@index([email])
+  @@map("customers")
+}
+
+model UserPreference {
+  id                String   @id @default(uuid())
+  userId            String   @unique @map("user_id")
+  darkMode          Boolean  @default(false) @map("dark_mode")
+  currency          String   @default("USD") @db.VarChar(10)
+  emailNotifications Boolean @default(true) @map("email_notifications")
+  pushNotifications Boolean @default(false) @map("push_notifications")
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("user_preferences")
+}
